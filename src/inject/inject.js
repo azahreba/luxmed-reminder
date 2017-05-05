@@ -27,9 +27,16 @@ chrome.extension.sendMessage({}, function (response) {
         if (document.readyState === "complete") {
             clearInterval(readyStateCheckInterval);
 
-            var firstDate = document.querySelector('.tableList > li > .title').innerText;
-            var d = new Date(firstDate.slice(-10, firstDate.length));
-            var d1 = new Date("07-05-2017");
+            var firstDateFull = document.querySelector('.tableList > li > .title').innerText;
+
+            var firstDate = firstDateFull.slice(-10, firstDateFull.length);
+
+            var year = parseInt(firstDate.slice(-4, firstDate.length), 10);
+            var month = parseInt(firstDate.slice(3, 5), 10);
+            var date = parseInt(firstDate.slice(0, 2), 10);
+
+            var d = new Date(year, month - 1, date);
+            var d1 = new Date(2017, 4, 7);
 
             if (d.getTime() < d1.getTime()) {
                 notifyMe(d.toDateString());
