@@ -14,7 +14,7 @@
   },
   "page_action": {
     "default_icon": "icons/luxmed128.png",
-    "default_title": "page action demo",
+    "default_title": "LuxMed Visit Finder",
     "default_popup": "src/page_action/page_action.html"
   },
   "permissions": [
