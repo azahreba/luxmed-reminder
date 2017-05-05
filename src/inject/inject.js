@@ -28,8 +28,8 @@ chrome.extension.sendMessage({}, function (response) {
             clearInterval(readyStateCheckInterval);
 
             var firstDate = document.querySelector('.tableList > li > .title').innerText;
-            var d = new Date(firstDate);
-            var d1 = new Date("Friday, 07-05-2017");
+            var d = new Date(firstDate.slice(-10, firstDate.length));
+            var d1 = new Date("07-05-2017");
 
             if (d.getTime() < d1.getTime()) {
                 notifyMe(d.toDateString());
