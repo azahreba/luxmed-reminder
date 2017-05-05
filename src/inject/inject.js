@@ -1,4 +1,8 @@
 chrome.extension.sendMessage({}, function (response) {
+
+    var yourSound;
+
+
     function notifyMe(date, time, location) {
         if (!("Notification" in window)) {
             alert("This browser does not support system notifications");
@@ -15,6 +19,7 @@ chrome.extension.sendMessage({}, function (response) {
         }
 
         function notify(date, time, location) {
+            audioNotification();
             var notification = new Notification('LuxMed', {
                 icon: 'http://www.luxmed.pl/i/logo.png',
                 body: 'DATE: ' + date +
@@ -24,6 +29,12 @@ chrome.extension.sendMessage({}, function (response) {
             // setTimeout(notification.close.bind(notification), 7000);
         }
     }
+
+    function audioNotification(){
+        yourSound.play();
+    }
+
+
 
     var readyStateCheckInterval = setInterval(function () {
         if (document.readyState === "complete") {
@@ -41,6 +52,7 @@ chrome.extension.sendMessage({}, function (response) {
             var d1 = new Date(2017, 4, 7);
 
             if (d.getTime() < d1.getTime()) {
+                yourSound = new Audio('https://notificationsounds.com/wake-up-tones/solemn-522/download/mp3');
                 var time  = document.querySelector('.tableList tbody > tr > td.hours').dataset.sort;
                 var location = document.querySelector('.tableList > li > .content tbody > tr > td:nth-child(2) > div:nth-child(3)').innerText;
 
