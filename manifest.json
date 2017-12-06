@@ -1,18 +1,14 @@
 {
-  "name": "LuxMed Visit Finder",
+  "name": "Spot Finder",
   "version": "0.0.1",
   "manifest_version": 2,
-  "icons": {
-    "128": "icons/luxmed128.png"
-  },
   "default_locale": "en",
   "background": {
     "page": "src/bg/background.html",
     "persistent": true
   },
   "page_action": {
-    "default_icon": "icons/luxmed128.png",
-    "default_title": "LuxMed Visit Finder",
+    "default_title": "Spot Finder",
     "default_popup": "src/page_action/page_action.html"
   },
   "permissions": [
@@ -35,7 +31,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://*.luxmed.pl/*"
+        "https://crossfitsolvay-krakow.cms.efitness.com.pl/*"
       ],
       "js": [
         "src/inject/inject.js"

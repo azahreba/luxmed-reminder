@@ -21,11 +21,8 @@ chrome.extension.sendMessage({}, function (response) {
 
         function notify(date, time, location) {
             audioNotification();
-            var notification = new Notification('LuxMed', {
-                icon: 'http://www.luxmed.pl/i/logo.png',
-                body: 'DATE: ' + date +
-                '\n' + "TIME: " + time +
-                '\n' + 'LOCATION: ' + location,
+            var notification = new Notification('FREE SPOT', {
+                body: '',
             });
             // setTimeout(notification.close.bind(notification), 7000);
         }
@@ -41,30 +38,46 @@ chrome.extension.sendMessage({}, function (response) {
         if (document.readyState === "complete") {
             clearInterval(readyStateCheckInterval);
 
-            var firstDateFull = document.querySelector('.tableList > li > .title').innerText;
+            let hours = Array.from(document.querySelectorAll('.hour'));
+            let endurance_hour = hours.filter(h => h.innerText == '19:00')[0]
 
-            var firstDate = firstDateFull.slice(-10, firstDateFull.length);
+            let endurance = endurance_hour.nextElementSibling
 
-            var year = parseInt(firstDate.slice(-4, firstDate.length), 10);
-            var month = parseInt(firstDate.slice(3, 5), 10);
-            var date = parseInt(firstDate.slice(0, 2), 10);
+            let spots = parseInt(endurance.querySelector('.event .availability .availability-number').innerText, 10)
 
-            var d = new Date(year, month - 1, date);
-            var d_max = new Date(2017, 11, 5);
-            var d_min = new Date(2017, 10, 3);
+            if (spots > 0) {
+                yourSound = new Audio('https://notificationsounds.com/wake-up-tones/solemn-522/download/mp3');
 
-            if (d.getTime() < d_max.getTime() /*&& d.getTime() > d_min.getTime()*/) {
+                notifyMe();
 
-                var time  = document.querySelector('.tableList tbody > tr > td.hours').dataset.sort;
-                var location = document.querySelector('.tableList > li > .content tbody > tr > td:nth-child(2) > div:nth-child(3)').innerText;
+                p = fetch('https://api.telegram.org/bot425932574:AAGGsWve44vmoWGuPVoxPvLoJnWVQhO9KYk/sendMessage', {
+                     method: 'post',
+                     body: 'chat_id=@JupyterNotebookNotification&text=FreeSpot',
+                     //425932574
+                     headers: {
+                       'Content-type': 'application/x-www-form-urlencoded'
+                     }
+                    })
+                      .then(
+                        function(response) {
+                          if (response.status !== 200) {
+                            console.log('Looks like there was a problem. Status Code: ' +
+                              response.status);
+                            return;
+                          }
 
-                if (parseInt(time[0] + time[1], 10) < 17){
-                    notifyMe(d.toDateString(), time, location);                    
-                }
-
-
+                          // Examine the text in the response
+                          response.json().then(function(data) {
+                            console.log(data);
+                          });
+                        }
+                      )
+                      .catch(function(err) {
+                        console.log('Fetch Error :-S', err);
+                      });
             } else {
-                setTimeout(() => document.querySelector('.button[type="submit"]').click(), 5000);
+                console.log('No spots :(')
+                setTimeout(() => location.reload(), 10000)
             }
 
             // console.dir(document.querySelector('.button[type="submit"]'));
