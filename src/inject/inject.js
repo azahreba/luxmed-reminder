@@ -1,6 +1,7 @@
 chrome.extension.sendMessage({}, function (response) {
 
-    var yourSound;
+    var yourSound = new Audio('https://notificationsounds.com/wake-up-tones/solemn-522/download/mp3');
+
 
 
     function notifyMe(date, time, location) {
@@ -49,18 +50,21 @@ chrome.extension.sendMessage({}, function (response) {
             var date = parseInt(firstDate.slice(0, 2), 10);
 
             var d = new Date(year, month - 1, date);
-            var d1 = new Date(2017, 4, 7);
+            var d_max = new Date(2017, 11, 5);
+            var d_min = new Date(2017, 10, 3);
 
-            if (d.getTime() < d1.getTime()) {
-                yourSound = new Audio('https://notificationsounds.com/wake-up-tones/solemn-522/download/mp3');
+            if (d.getTime() < d_max.getTime() /*&& d.getTime() > d_min.getTime()*/) {
+
                 var time  = document.querySelector('.tableList tbody > tr > td.hours').dataset.sort;
                 var location = document.querySelector('.tableList > li > .content tbody > tr > td:nth-child(2) > div:nth-child(3)').innerText;
 
-                notifyMe(d.toDateString(), time, location);
-                notifyMe(d.toDateString(), time, location);
-                notifyMe(d.toDateString(), time, location);
+                if (parseInt(time[0] + time[1], 10) < 17){
+                    notifyMe(d.toDateString(), time, location);                    
+                }
+
+
             } else {
-                setTimeout(() => document.querySelector('.button[type="submit"]').click(), 5000)
+                setTimeout(() => document.querySelector('.button[type="submit"]').click(), 5000);
             }
 
             // console.dir(document.querySelector('.button[type="submit"]'));

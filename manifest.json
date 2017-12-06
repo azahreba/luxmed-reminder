@@ -23,7 +23,6 @@
     "contentSettings",
     "contextMenus",
     "cookies",
-    "fileBrowserHandler",
     "tts",
     "ttsEngine",
     "history",
