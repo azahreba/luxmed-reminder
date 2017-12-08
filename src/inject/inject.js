@@ -41,29 +41,36 @@ chrome.extension.sendMessage({}, function (response) {
         if (document.readyState === "complete") {
             clearInterval(readyStateCheckInterval);
 
-            var firstDateFull = document.querySelector('.tableList > li > .title').innerText;
+            var firstDateFull = document.querySelector('.tableList > li > .title');
 
-            var firstDate = firstDateFull.slice(-10, firstDateFull.length);
+            if (firstDateFull) {
+                firstDateFull = firstDateFull.innerText
 
-            var year = parseInt(firstDate.slice(-4, firstDate.length), 10);
-            var month = parseInt(firstDate.slice(3, 5), 10);
-            var date = parseInt(firstDate.slice(0, 2), 10);
+              var firstDate = firstDateFull.slice(-10, firstDateFull.length);
 
-            var d = new Date(year, month - 1, date);
-            var d_max = new Date(2017, 11, 5);
-            var d_min = new Date(2017, 10, 3);
+              var year = parseInt(firstDate.slice(-4, firstDate.length), 10);
+              var month = parseInt(firstDate.slice(3, 5), 10);
+              var date = parseInt(firstDate.slice(0, 2), 10);
 
-            if (d.getTime() < d_max.getTime() /*&& d.getTime() > d_min.getTime()*/) {
+              var d = new Date(year, month - 1, date);
+              var d_max = new Date(2017, 11, 10);
+              var d_min = new Date(2017, 10, 3);
 
-                var time  = document.querySelector('.tableList tbody > tr > td.hours').dataset.sort;
-                var location = document.querySelector('.tableList > li > .content tbody > tr > td:nth-child(2) > div:nth-child(3)').innerText;
+                if (d.getTime() < d_max.getTime() /*&& d.getTime() > d_min.getTime()*/) {
 
-                if (parseInt(time[0] + time[1], 10) < 17){
-                    notifyMe(d.toDateString(), time, location);                    
+                    var time  = document.querySelector('.tableList tbody > tr > td.hours').dataset.sort;
+                    var location = document.querySelector('.tableList > li > .content tbody > tr > td:nth-child(2) > div:nth-child(3)').innerText;
+
+                    if (parseInt(time[0] + time[1], 10) < 17){
+                        notifyMe(d.toDateString(), time, location);
+                    } else {
+                        setTimeout(() => document.querySelector('.button[type="submit"]').click(), 5000);
+                    }
+                } else {
+                    setTimeout(() => document.querySelector('.button[type="submit"]').click(), 5000);
                 }
-
-
-            } else {
+            }
+            else {
                 setTimeout(() => document.querySelector('.button[type="submit"]').click(), 5000);
             }
 
